@@ -80,6 +80,17 @@ body {
     overflow-y: auto;
 }
 
+#siteFrame {
+    width: 100%;
+    height: 95vh;
+    border: none;
+    display: block;
+}
+
+#siteFrame.hidden {
+    display: none !important;
+}
+
 .view-page {
     width: 100%;
     height: 100%;
