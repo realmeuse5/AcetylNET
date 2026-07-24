@@ -41,11 +41,14 @@ const domainInput = document.getElementById('domainInput');
 const tldSelect = document.getElementById('tldSelect');
 const publishBtn = document.getElementById('publishBtn');
 const publishStatus = document.getElementById('publishStatus');
+const dirView = document.getElementById('dirView');
+const directoryList = document.getElementById('directoryList');
 
 function showView(view) {
     homeView.classList.add('hidden');
     dashView.classList.add('hidden');
     siteFrame.classList.add('hidden');
+    dirView.classList.add('hidden');
 
     view.classList.remove('hidden');
 }
@@ -72,6 +75,8 @@ urlBox.addEventListener('keydown', (e) => {
         } else if (inputUrl === 'acetyl://dashboard' || inputUrl === 'acetyl://dash') {
             showView(dashView);
             urlBox.value = 'acetyl://dashboard';
+        } else if (inputUrl === 'acetyl://directory') {
+            loadDirectory()
         } else {
             const domainKey = inputUrl.replace(/^acetyl:\/\//, '');
             
@@ -276,5 +281,47 @@ async function loadSite(domainKey) {
     } catch (err) {
         console.error("Error loading site:", err);
         alert("Failed to load page.");
+    }
+}
+
+async function loadDirectory() {
+    showView(dirView);
+    directoryList.innerHTML = "<p>Loading...</p>";
+
+    try {
+        const domainsRef = collection(db, "domains");
+        const querySnapshot = await getDocs(domainsRef);
+
+        if (querySnapshot.empty) {
+            directoryList.innerHTML = "<p>No registered websites found.</p>";
+            return;
+        }
+
+        let html = "<div class='dir-container'>";
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            
+            html += `
+                <div class="dir-item">
+                    <a href="#" class="dir-link" data-url="${data.fullUrl}">${data.fullUrl}</a>
+                </div>
+            `;
+        });
+        html += "</div>";
+
+        directoryList.innerHTML = html;
+
+        directoryList.querySelectorAll('.dir-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetUrl = link.getAttribute('data-url');
+                urlBox.value = targetUrl;
+                urlBox.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+            });
+        });
+
+    } catch (err) {
+        console.error("Error loading directory:", err);
+        directoryList.innerHTML = "<p>Failed to load directory.</p>";
     }
 }

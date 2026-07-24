@@ -381,3 +381,27 @@ body {
     font-family: 'DM Sans', sans-serif;
 }
 
+#dirView {
+    width: 100%;
+    color: #e0e0e0;
+}
+
+.dir-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1rem;
+}
+
+.dir-link {
+    color: #96979e;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-family: monospace;
+}
+
+.dir-link:hover {
+    color: white;
+}
+
