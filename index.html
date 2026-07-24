@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AcetylNET</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="header"> 
+        <h1>AcetylNET</h1>
+        <input id="urlBox" placeholder="acetyl://" value="acetyl://home">
+        <button id="homeBtn">Home</button>
+        <button id="dashBtn">Dashboard</button>
+    </div>
+
+    <div id="viewport">
+
+        <div id="homeView" class="view-page">
+            <div id="home-section">
+                <div id="home-logo"><img src="Assets/icon.svg"><h2>AcetylNET</h2></div>
+                <p>Free domains by Acetyl</p>
+            </div>
+
+            <div class="ads-section">
+                    <div class="ad-card">
+                        <span class="ad-badge">AD</span>
+                        <p>Your ad here!</p>
+                    </div>
+                    <div class="ad-card">
+                        <span class="ad-badge">AD</span>
+                        <p>Ad Slot #2</p>
+                    </div>
+                    <div class="ad-card">
+                        <span class="ad-badge">AD</span>
+                        <p>Ad Slot #3</p>
+                    </div>
+            </div>
+
+        </div>
+
+        <div id="dashView" class="view-page hidden">
+            <div id="dash-image">
+                <img src="Assets/dash-image.png"/>
+            </div>
+
+            <div id="dash-content">
+                <h2>Dashboard</h2>
+                
+                <div class="dash-card">
+                    <h3>Claim a Domain</h3>
+                    
+                    <div class="domain-input-group">
+                        <span class="prefix">acetyl://</span>
+                        <input id="domainInput" type="text" placeholder="my-cool-site" maxlength="32" required>
+                        <select id="tldSelect">
+                            <option value=".acetyl">.acetyl</option>
+                            <option value=".com">.com</option>
+                            <option value=".net">.net</option>
+                            <option value=".app">.app</option>
+                            <option value=".gg">.gg</option>
+                            <option value=".io">.io</option>
+                        </select>
+                    </div>
+
+                    <div class="upload-zone">
+                        <label for="htmlFileInput" class="file-label">
+                            <span id="fileNameDisplay">Choose an .html file or drag it here</span>
+                        </label>
+                        <input id="htmlFileInput" type="file" accept=".html" class="hidden-file-input">
+                    </div>
+
+                    <button id="publishBtn">Publish Site</button>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Your Domains</h3>
+                    <div id="myDomainsList">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <iframe id="siteFrame" class="view-page hidden" sandbox="allow-scripts allow-forms"></iframe>
+
+    </div>
+
+    <script type="module" src="main.js"></script>
+
+</body>
+</html>

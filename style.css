@@ -1,0 +1,372 @@
+html {
+    font-family: "DM Sans", sans-serif;
+    background-color: #1a1a1e;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* HEADER */
+
+#header {
+    display: flex;
+    align-items: center;
+    background-color: #121214;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    height: 5vh;
+    border-bottom: #29292d 1px solid;
+}
+
+#header h1 {
+    font-family: "Cal Sans", sans-serif;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 1.5vw;
+    background: linear-gradient(90deg, #4E00CA, #FF0044);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: transparent;
+}
+
+#urlBox {
+    background: linear-gradient(90deg, #1a1a1e, #121214);
+    border: none;
+    color: white;
+    height: 70%;
+    width: 75%;
+    border-radius: 8px;
+    margin-left: 2%;
+    font-size: 1vw;
+    padding: 5px 10px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+#urlBox:focus {
+    outline: none;
+}
+
+#homeBtn, #dashBtn {
+    background-color: transparent;
+    border: none;
+    color: #a0a0a5;
+    font-size: 1.1vw;
+    cursor: pointer;
+    height: 5vh;
+    margin-left: 20px; 
+    padding-left: 15px;
+    padding-right: 15px;
+    width: auto;
+}
+
+#homeBtn:hover, #dashBtn:hover {
+    color: white;
+    background-color: #1a1a1e;
+}
+
+#viewport {
+    position: absolute;
+    top: 5vh;
+    left: 0;
+    width: 100vw;
+    height: 95vh;
+    overflow-y: auto;
+}
+
+.view-page {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#homeView {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#home-section {
+    margin-bottom: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10%;
+}
+
+#home-logo {
+    display: flex;
+    flex-direction: row;
+}
+
+#home-section img {
+    height: 15vh;
+    width: auto;
+    margin-top: 20px;
+}
+
+#home-section h2 {
+    font-family: "Cal Sans", sans-serif;
+    font-size: 4vw;
+    margin-bottom: 10px;
+    color: white;
+}
+
+#home-section p {
+    margin-top: 0;
+    color: #a0a0ab;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1vw;
+}
+
+.ads-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-top: 15px;
+    padding-left: 15vw;
+    padding-right: 15vw;
+}
+
+.ad-card {
+    background: #121214;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    min-height: 100px;
+    color: white;
+}
+
+.ad-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #4E00CA, #FF0044);
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.ad-card:hover {
+    border: #29292d 1px solid;
+}
+
+#dashView {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+#dash-image {
+    width: 40%; 
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #1a1a1e;
+}
+
+#dash-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+#dash-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 60vw;
+}
+
+#dash-content h2 {
+    font-family: "Cal Sans", sans-serif;
+    font-size: 2vw;
+    margin: 0;
+    margin-bottom: 2vh;
+    color: white;
+    margin-left: 2vw;
+    margin-top: 1.5vw;
+}
+
+.dash-card {
+    background: #121214;
+    padding: 24px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.dash-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 1.3vw;
+    color: white;
+    margin-left: 20px;
+}
+
+.domain-input-group {
+    display: flex;
+    align-items: center;
+    background: #1a1a1e;
+    border-radius: 8px;
+    padding: 4px 0;
+    margin-bottom: 15px;
+    width: 95%;
+}
+
+.domain-input-group .prefix {
+    color: #96979e;
+    padding-left: 10px;
+    user-select: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+}
+
+#domainInput {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    padding: 8px;
+    flex-grow: 1;
+}
+
+#domainInput:focus {
+    outline: none;
+}
+
+#tldSelect {
+    background: #1a1a1e;
+    border: none;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+#tldSelect:focus {
+    outline: none;
+}
+
+.upload-zone {
+    margin-bottom: 18px;
+    width: 95%;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1e;
+    border-radius: 8px;
+    padding: 25px;
+    cursor: pointer;
+}
+
+.file-label:hover {
+    border: #29292d 1px solid;
+}
+
+#fileNameDisplay {
+    color: #a0a0ab;
+    font-size: 0.9rem;
+}
+
+#publishBtn {
+    width: 95%;
+    background: linear-gradient(90deg, #4E00CA 0%, #FF0044 50%, #4E00CA 100%);
+    color: #ffffff;
+    cursor: pointer;
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    transition: background-position 0.4s ease;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#publishBtn:hover {
+    background-position: 100% 0%;
+}
+
+.domain-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    margin-bottom: 0.5rem;
+    background: #1a1a1e;
+    border-radius: 8px;
+    width: 95%;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.domain-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    margin-left: 15px;
+}
+
+.domain-row-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.domain-row-date {
+    font-size: 0.85rem;
+    color: #96979e;
+}
+
+.delete-domain-btn {
+    background: none;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: sans-serif;
+    margin-right: 15px;
+}
+
+.delete-domain-btn:hover {
+    transform: scale(1.2);
+    color: #96979e;
+}
+
+.delete-domain-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.empty-msg {
+    color: #96979e;
+    margin-left: 20px;
+    font-family: 'DM Sans', sans-serif;
+}
+
