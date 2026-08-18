@@ -124,24 +124,25 @@ body {
 #home-section img {
     height: 15vh;
     width: auto;
-    margin-top: 20px;
 }
 
 #home-section h2 {
     font-family: "Cal Sans", sans-serif;
-    font-size: 4vw;
-    margin-bottom: 10px;
+    font-size: 4rem;
+    margin-top: 0;
+    margin-bottom: 0;
     color: white;
+    align-self: center;
 }
 
 #home-section p {
     margin-top: 0;
     color: #a0a0ab;
     font-family: 'DM Sans', sans-serif;
-    font-size: 1vw;
+    font-size: 1rem;
 }
 
-.ads-section {
+.a {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 15px;
@@ -150,16 +151,17 @@ body {
     padding-right: 15vw;
 }
 
-.ad-card {
+.a-card {
     background: #121214;
     border-radius: 10px;
     padding: 20px;
     position: relative;
     min-height: 100px;
     color: white;
+    border: transparent 1px solid;
 }
 
-.ad-badge {
+.a-badge {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -170,7 +172,7 @@ body {
     border-radius: 4px;
 }
 
-.ad-card:hover {
+.a-card:hover {
     border: #29292d 1px solid;
 }
 
