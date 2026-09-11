@@ -1,5 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { 
+    getFirestore, 
+    doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -16,6 +19,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 let currentUser = null;
+let isLoadingSite = false;
 
 signInAnonymously(auth).catch((error) => {
     console.error("Auth error:", error);
@@ -36,13 +40,15 @@ const homeView = document.getElementById('homeView');
 const dashView = document.getElementById('dashView');
 const siteFrame = document.getElementById('siteFrame');
 const htmlFileInput = document.getElementById('htmlFileInput');
+const localFileInput = document.getElementById('localFileInput');
 const fileNameDisplay = document.getElementById('fileNameDisplay');
 const domainInput = document.getElementById('domainInput');
 const tldSelect = document.getElementById('tldSelect');
 const publishBtn = document.getElementById('publishBtn');
-const publishStatus = document.getElementById('publishStatus');
 const dirView = document.getElementById('dirView');
 const directoryList = document.getElementById('directoryList');
+
+let activeObjectUrl = null;
 
 function showView(view) {
     homeView.classList.add('hidden');
@@ -53,7 +59,7 @@ function showView(view) {
     view.classList.remove('hidden');
 }
 
-showView(homeView)
+showView(homeView);
 
 homeBtn.addEventListener('click', () => {
     showView(homeView);
@@ -63,6 +69,28 @@ homeBtn.addEventListener('click', () => {
 dashBtn.addEventListener('click', () => {
     showView(dashView);
     urlBox.value = 'acetyl://dashboard';
+});
+
+homeView.addEventListener('click', () => {
+    localFileInput.click();
+});
+
+localFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+    }
+
+    activeObjectUrl = URL.createObjectURL(file);
+    
+    showView(siteFrame);
+    siteFrame.removeAttribute('srcdoc');
+    siteFrame.src = activeObjectUrl;
+    
+    urlBox.value = `acetyl://local/${file.name}`;
+    localFileInput.value = "";
 });
 
 urlBox.addEventListener('keydown', (e) => {
@@ -76,15 +104,13 @@ urlBox.addEventListener('keydown', (e) => {
             showView(dashView);
             urlBox.value = 'acetyl://dashboard';
         } else if (inputUrl === 'acetyl://directory') {
-            loadDirectory()
+            loadDirectory();
         } else {
             const domainKey = inputUrl.replace(/^acetyl:\/\//, '');
-            
             if (domainKey) {
                 loadSite(domainKey);
             }
         }
-
         urlBox.blur();
     }
 });
@@ -92,27 +118,37 @@ urlBox.addEventListener('keydown', (e) => {
 let selectedFileContent = "";
 
 htmlFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
+    const MAX_FILE_SIZE = 1 * 1024 * 1024;
 
-    if (file) {
-        fileNameDisplay.textContent = `📄 ${file.name}`;
+    htmlFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            selectedFileContent = event.target.result;
-            console.log("File content loaded into memory");
-        };
-        reader.readAsText(file);
-    } else {
-        fileNameDisplay.textContent = "Choose an .html file or drag it here";
-        selectedFileContent = "";
-    }
+        if (file) {
+            if (file.size > MAX_FILE_SIZE) {
+                alert("File too large, max file size 1 MB.");
+                htmlFileInput.value = "";
+                fileNameDisplay.textContent = "Choose an .html file or drag it here";
+                selectedFileContent = "";
+                return;
+            }
+
+            fileNameDisplay.textContent = `📄 ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                selectedFileContent = event.target.result;
+                console.log("File content loaded into memory");
+            };
+            reader.readAsText(file);
+        } else {
+            fileNameDisplay.textContent = "Choose an .html file or drag it here";
+            selectedFileContent = "";
+        }
+    });
 });
 
 publishBtn.addEventListener('click', async () => {
     const rawDomain = domainInput.value.trim().toLowerCase();
     const selectedTld = tldSelect.value;
-    
     const validDomainRegex = /^[a-z0-9-]{1,32}$/;
 
     if (!rawDomain || !validDomainRegex.test(rawDomain)) {
@@ -139,7 +175,6 @@ publishBtn.addEventListener('click', async () => {
 
         const domainRef = doc(db, "domains", fullDomainKey);
         const domainSnap = await getDoc(domainRef);
-
         const isUpdatingExisting = domainSnap.exists();
 
         if (isUpdatingExisting) {
@@ -173,9 +208,6 @@ publishBtn.addEventListener('click', async () => {
         });
 
         alert(`Successfully published ${fullDomainUrl}`);
-        console.log(`Published ${fullDomainUrl} to Firestore.`);
-
-        // Refresh UI
         domainInput.value = "";
         fileNameDisplay.textContent = "Choose an .html file or drag it here";
         selectedFileContent = "";
@@ -232,17 +264,15 @@ async function loadUserDomains() {
             const deleteBtn = domainRow.querySelector('.delete-domain-btn');
             deleteBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                
                 const confirmed = confirm(`Are you sure you want to delete ${data.fullUrl}? This cannot be undone.`);
                 if (!confirmed) return;
 
                 try {
                     deleteBtn.disabled = true;
-                    deleteBtn.textContent = "Deleting..."
+                    deleteBtn.textContent = "Deleting...";
                     await deleteDoc(doc(db, "domains", domainKey));
                     alert(`Deleted ${data.fullUrl}`);  
                     await loadUserDomains();
-
                 } catch (err) {
                     console.error("Error deleting domain:", err);
                     alert("Failed to delete domain. Check browser console.");
@@ -267,10 +297,11 @@ async function loadSite(domainKey) {
         if (domainSnap.exists()) {
             const siteData = domainSnap.data();
             showView(siteFrame);
+            siteFrame.removeAttribute('src');
             siteFrame.srcdoc = siteData.htmlContent;
-            
         } else {
             showView(siteFrame);
+            siteFrame.removeAttribute('src');
             siteFrame.srcdoc = `
                 <body style="background:#1a1a1e; color:white; font-family:sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:90vh;">
                     <h1 style="font-size:3rem; margin-bottom:10px;">404 :(</h1>
@@ -286,27 +317,36 @@ async function loadSite(domainKey) {
 
 async function loadDirectory() {
     showView(dirView);
-    directoryList.innerHTML = "<p>Loading...</p>";
+    directoryList.innerHTML = "<p style='color:#a0a0ab;'>Loading directory...</p>";
 
     try {
-        const domainsRef = collection(db, "domains");
-        const querySnapshot = await getDocs(domainsRef);
+        const projectId = "acetylnet"; 
+        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/domains?mask.fieldPaths=none`;
 
-        if (querySnapshot.empty) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+
+        if (!data.documents || data.documents.length === 0) {
             directoryList.innerHTML = "<p>No registered websites found.</p>";
             return;
         }
 
         let html = "<div class='dir-container'>";
-        querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            
+        
+        data.documents.forEach((doc) => {
+            const pathParts = doc.name.split('/');
+            const domainKey = pathParts[pathParts.length - 1];
+            const fullUrl = `acetyl://${domainKey}`;
+
             html += `
                 <div class="dir-item">
-                    <a href="#" class="dir-link" data-url="${data.fullUrl}">${data.fullUrl}</a>
+                    <a href="#" class="dir-link" data-url="${fullUrl}">${fullUrl}</a>
                 </div>
             `;
         });
+        
         html += "</div>";
 
         directoryList.innerHTML = html;
@@ -321,7 +361,7 @@ async function loadDirectory() {
         });
 
     } catch (err) {
-        console.error("Error loading directory:", err);
-        directoryList.innerHTML = "<p>Failed to load directory.</p>";
+        console.error("Error loading directory via REST:", err);
+        directoryList.innerHTML = "<p style='color:#ff4444;'>Failed to load directory.</p>";
     }
 }

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="UTF-8">
@@ -22,27 +21,10 @@
 
         <div id="homeView" class="view-page">
             <div id="home-section">
-                <div id="home-logo"><img src="Assets/icon.svg"><h2>AcetylNET</h2></div>
-                <p>Free domains by Acetyl</p>
+                <h2>AcetylNET</h2>
+                <p>Click to load HTML file or type an acetyl:// URL above.</p>
             </div>
-
-            <div class="a">
-                    <div class="a-card">
-                        <span class="a-badge">AD</span>
-                        <p>Ultimate Game Stash Update!</p>
-                        <p>You can now use acetyl://ugs.gg</p>
-                    </div>
-                    <div class="a-card">
-                        <span class="a-badge">AD</span>
-                        <p>Want to start chatting NOW?</p>
-                        <p>acetyl.cc OR acetyl.onrender.com</p>
-                    </div>
-                    <div class="a-card">
-                        <span class="a-badge">AD</span>
-                        <p>Your ad here!</p>
-                    </div>
-            </div>
-
+            <input id="localFileInput" type="file" accept=".html" class="hidden-file-input">
         </div>
 
         <div id="dashView" class="view-page hidden">
@@ -58,7 +40,7 @@
                     
                     <div class="domain-input-group">
                         <span class="prefix">acetyl://</span>
-                        <input id="domainInput" type="text" placeholder="my-cool-site" maxlength="32" required>
+                        <input id="domainInput" type="text" placeholder="mycoolwebsite" maxlength="32" required>
                         <select id="tldSelect">
                             <option value=".acetyl">.acetyl</option>
                             <option value=".com">.com</option>
@@ -89,11 +71,11 @@
             </div>
         </div>
 
-        <div id="dirView" class="view hidden">            
+        <div id="dirView" class="view-page hidden">            
             <div id="directoryList"></div>
         </div>
 
-        <iframe id="siteFrame" class="hidden"></iframe>
+        <iframe id="siteFrame" class="hidden" sandbox="allow-scripts allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin"></iframe>
 
     </div>
 
