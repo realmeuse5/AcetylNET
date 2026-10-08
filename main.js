@@ -47,6 +47,9 @@ const tldSelect = document.getElementById('tldSelect');
 const publishBtn = document.getElementById('publishBtn');
 const dirView = document.getElementById('dirView');
 const directoryList = document.getElementById('directoryList');
+const header = document.getElementById('header');
+const viewport = document.getElementById('viewport');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
 
 let activeObjectUrl = null;
 
@@ -222,6 +225,17 @@ publishBtn.addEventListener('click', async () => {
     }
 });
 
+fullscreenBtn.addEventListener('click', () => {
+    toggleHeaderFullscreen();
+});
+
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleHeaderFullscreen();
+    }
+});
+
 const myDomainsList = document.getElementById('myDomainsList');
 
 async function loadUserDomains() {
@@ -296,6 +310,17 @@ async function loadSite(domainKey) {
 
         if (domainSnap.exists()) {
             const siteData = domainSnap.data();
+
+            if (siteData.accessKey) {
+                const userKey = prompt(`Access key:`);
+
+                if (userKey !== siteData.accessKey) {
+                    showView(homeView);
+                    urlBox.value = 'acetyl://home';
+                    return;
+                }
+            }
+
             showView(siteFrame);
             siteFrame.removeAttribute('src');
             siteFrame.srcdoc = siteData.htmlContent;
@@ -364,4 +389,9 @@ async function loadDirectory() {
         console.error("Error loading directory via REST:", err);
         directoryList.innerHTML = "<p style='color:#ff4444;'>Failed to load directory.</p>";
     }
+}
+
+function toggleHeaderFullscreen() {
+    header.classList.toggle('hidden-header');
+    viewport.classList.toggle('fullscreen');
 }

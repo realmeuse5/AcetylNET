@@ -23,6 +23,11 @@ body {
     width: 100%;
     height: 5vh;
     border-bottom: #29292d 1px solid;
+    transition: transform 0.3s ease;
+}
+
+#header.hidden-header {
+    transform: translateY(-100%);
 }
 
 #header h1 {
@@ -53,7 +58,7 @@ body {
     outline: none;
 }
 
-#homeBtn, #dashBtn {
+#homeBtn, #dashBtn, #fullscreenBtn {
     background-color: transparent;
     border: none;
     color: #a0a0a5;
@@ -66,9 +71,13 @@ body {
     width: auto;
 }
 
-#homeBtn:hover, #dashBtn:hover {
+#homeBtn:hover, #dashBtn:hover, #fullscreenBtn:hover {
     color: white;
     background-color: #1a1a1e;
+}
+
+#fullscreenBtn {
+    margin-left: 10px;
 }
 
 #viewport {
@@ -78,11 +87,17 @@ body {
     width: 100vw;
     height: 95vh;
     overflow-y: auto;
+    transition: top 0.3s ease, height 0.3s ease;
+}
+
+#viewport.fullscreen {
+    top: 0;
+    height: 100vh;
 }
 
 #siteFrame {
     width: 100%;
-    height: 95vh;
+    height: 100%;
     border: none;
     display: block;
 }
